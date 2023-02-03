@@ -9,6 +9,9 @@ class DB {
   // Find all employees, join with roles and departments to display their roles, salaries, departments, and managers
   findAllEmployees() {
     // prepared statement for finding all employees
+    DB.query('SELECT * FROM employee', function (err, results) {
+      console.log(results);
+    });
   }
 
   // Create a new employee
