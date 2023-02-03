@@ -2,6 +2,7 @@
 const inquirer = require('inquirer');
 const logo = require('asciiart-logo');
 const db = require('./db/index');
+require('console.table');
 
 init();
 
@@ -56,14 +57,13 @@ function mainPrompt() {
 // View all employees
 function viewEmployees() {
   // goes to the db that you required and uses your find all employees method
-  console.log("View employees table only");
-  // db.findAllEmployees
-  
-      // .then that console.table the results
-      console.table(results);
+    db.findAllEmployees()
+       //.then that console.table the results
+       .then(results => console.table(results))
+       .catch(err =>console.error(err));
     
-      // call the prompts again
-      mainPrompt();
+    // call the prompts again
+    mainPrompt();
 };
 
 // Update an employee's role
@@ -76,7 +76,7 @@ function updateEmployeeRole() {
   inquirer.prompt([
     {
        type: 'list',
-       name: 'newEmRole',
+       name: 'newRole',
        message: `Which employee's role do you want to update?` ,
        choices: ["employee name list"]
     },

@@ -9,20 +9,29 @@ class DB {
   // Find all employees, join with roles and departments to display their roles, salaries, departments, and managers
   findAllEmployees() {
     // prepared statement for finding all employees
-    DB.query('SELECT * FROM employee', function (err, results) {
-      console.log(results);
-    });
-  }
+    return new Promise((resolve, reject) => {
+      this.connection.query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, concat(manager.first_name, ' ', manager.last_name) AS manager
+      FROM employee 
+      JOIN role ON employee.role_id = role.id
+      JOIN department ON role.department_id = department.id
+      LEFT JOIN employee AS manager ON employee.manager_id = manager.id
+      ORDER BY employee.id`, (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+        });
+      });
+    };
 
   // Create a new employee
   createEmployee(employee) {
     // prepared statement
     // add to DB
-  }
+  };
 
   // sql commands/prepared statements
 
   // updating an employee role
+  
 
   // finding all roles
 
@@ -34,6 +43,6 @@ class DB {
 
 
 
-}
+};
 
 module.exports = new DB(connection);
