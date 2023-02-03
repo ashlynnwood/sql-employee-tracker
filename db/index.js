@@ -31,15 +31,40 @@ class DB {
   // sql commands/prepared statements
 
   // updating an employee role
-  
+
+
 
   // finding all roles
+  findAllRoles() {
+    // prepared statement for finding all roles
+    return new Promise((resolve, reject) => {
+      this.connection.query(`SELECT ...`, (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+        });
+      });
+  };
 
   // creating a new role
+  createRole(role) {
+
+  };
 
   // finding all depts
+  findAllDepts() {
+    // prepared statement for finding all departments
+    return new Promise((resolve, reject) => {
+      this.connection.query(`SELECT * FROM department`, (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+        });
+      });
+  };
 
   // creating a new dept
+  createDept(department) {
+
+  };
 
 
 
