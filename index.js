@@ -34,20 +34,20 @@ function loadMainPrompts() {
           case 'Update Employee Role':
               updateEmployeeRole()
               break;
-          case 'View Departments':
-              viewDepts()
-              break;
           case 'Add Employee':
-              addEmployee()
+            addEmployee()
               break;
-          case 'View All Roles':
-              viewRoles()
-              break;
-          case 'Add Role':
-              addRole()
+          case 'View Departments':
+            viewDepts()
               break;
           case 'Add Department':
-              addDept()
+            addDept()
+              break;
+          case 'View All Roles':
+            viewRoles()
+              break;
+          case 'Add Role':
+            addRole()
               break;
           default:
               connection.end()
@@ -63,7 +63,7 @@ function viewEmployees() {
   // db.findAllEmployees
     db.query('SELECT * FROM employee', function (err, results){
       // .then that console.table the results
-      console.log(results);
+      console.table(results);
     });
       // call the prompts again
       mainPrompt();
@@ -110,14 +110,34 @@ function addDept() {
 
 // Add an employee func
 function addEmployee() {
-  // What is the employee's first name?
-  // What is the employee's last name?
-  // What is the employee's role? (list)
-      // sales lead, salesperson, lead engineer, software engineer, account manager, account, legal team lead
-  // Who is the employee's manager? (list)
-      // list of names + none
-  // 
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: "What is the employee's first name?"
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: "What is the employee's last name?"
+        },
+        {
+            type: 'input',
+            name: 'emRole',
+            message: "What is the employee's role?"
+            // list?
+            // sales lead, salesperson, lead engineer, software engineer, account manager, account, legal team lead
+        },
+        {
+            type: 'input',
+            name: 'emManager',
+            message: "Who is the employee's manager?"
+            // list?
+            // list of names + none
+        },
+    ]).then(answer => {
   
+    })
   mainPrompt();
 
 };
