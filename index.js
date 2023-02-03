@@ -11,16 +11,16 @@ function init() {
 
   // load the main prompts
   mainPrompt();
-}
+};
+
 // Prompt to see what the user wants to do
 function mainPrompt() {
-    // Bonus: view all employees by manager, view all employees by dept, remove dept, remove role,  remove employee, view total utilized budget by dept, update employee manager 
     inquirer.prompt([
       {
           type: 'list',
           name: 'mainPrompt',
           message: "What would you like to do?",
-          choices : ['View All Employees', 'Update Employee Role', 'View Departments', 'Add Employee', 'View All Roles', 'Add Role', 'Add Department', 'Quit']
+          choices: ['View All Employees', 'Update Employee Role', 'View Departments', 'Add Employee', 'View All Roles', 'Add Role', 'Add Department', 'Quit']
       }
       // .then that calls the appropriate function depending on what the user chose
   ]).then(answer => {
@@ -49,9 +49,9 @@ function mainPrompt() {
           default:
               quit()
       }
-  })
+  });
 
-}
+};
 
 // View all employees
 function viewEmployees() {
@@ -73,8 +73,24 @@ function updateEmployeeRole() {
   // set up a variable for the employee that user selects
   // find all roles
   // put those into a inquirer prompt
+  inquirer.prompt([
+    {
+       type: 'list',
+       name: 'newEmRole',
+       message: `Which employee's role do you want to update?` ,
+       choices: ["employee name list"]
+    },
+    {
+       type: 'list',
+       name: 'updateRole',
+       message: `Which role do you want to assign to the selected employee?` ,
+       choices: ["role list"]
+    },
+  ]).then(answers => {
+        // .then - use your update employee method (set up in class), passing in the employee they selected, and the role they chose to assign to them (in that class, use data that's coming in inside prepared statements to interact with the db)
 
-      // .then - use your update employee method (set up in class), passing in the employee they selected, and the role they chose to assign to them (in that class, use data that's coming in inside prepared statements to interact with the db)
+        console.log(`Updated ${employee.name}'s role.`)
+    });
       mainPrompt();
 };
 
@@ -88,7 +104,27 @@ function viewRoles() {
 function addRole() {
   // find all depts
   // use those in one of your inquirer prompt's quesyions (what dept does the role belong to)
-  // .then creates the role with a method from your db class
+  inquirer.prompt([
+    {
+        type: 'input',
+        name: 'newRole',
+        message: 'What is the name of the role?'
+    },
+    {
+        type: 'input',
+        name: 'newSalary',
+        message: 'What is the salary of the role?'
+    },
+    {
+        type: 'list',
+        name: 'roleDept',
+        message: 'Which department does the role belong to?',
+        choices: ['Engineering', 'Finance', 'Legal', 'Sales']
+    },
+  ]).then(answer => {
+    // .then creates the role with a method from your db class
+    console.log(`Added ${answer.newRole} to the database.`)
+    })
 
   mainPrompt();
 };
@@ -129,21 +165,19 @@ function addEmployee() {
             message: "What is the employee's last name?"
         },
         {
-            type: 'input',
+            type: 'list',
             name: 'emRole',
-            message: "What is the employee's role?"
-            // list?
-            // sales lead, salesperson, lead engineer, software engineer, account manager, account, legal team lead
+            message: "What is the employee's role?",
+            choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead']
         },
         {
-            type: 'input',
+            type: 'list',
             name: 'emManager',
-            message: "Who is the employee's manager?"
-            // list?
-            // list of names + none
+            message: "Who is the employee's manager?",
+            choices: ['None', 'john Doe', 'Mike Chan', 'Ashley Rodriguez', 'Kevin Tupik', 'Kunal Singh','Maila Brown']
         },
     ]).then(answer => {
-  
+        console.log(`Added ${answer.firstName.lastName} to the database.`)
     })
   mainPrompt();
 
@@ -157,3 +191,4 @@ function quit() {
 
 
 
+// Bonus: view all employees by manager, view all employees by dept, remove dept, remove role,  remove employee, view total utilized budget by dept, update employee manager 
