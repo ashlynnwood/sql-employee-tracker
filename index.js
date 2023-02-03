@@ -55,12 +55,13 @@ function mainPrompt() {
 };
 
 // View all employees
-function viewEmployees() {
+async function viewEmployees() {
   // goes to the db that you required and uses your find all employees method
-    db.findAllEmployees()
+    const results = await db.findAllEmployees()
        //.then that console.table the results
-       .then(results => console.table(results))
-       .catch(err =>console.error(err));
+    //    .then(results => )
+       console.table(results);
+    //    .catch(err =>console.error(err));
     
     // call the prompts again
     mainPrompt();
