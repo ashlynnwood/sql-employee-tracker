@@ -36,16 +36,16 @@ class DB {
 
 
   // updating an employee role
-    updateEmployee(first_name, last_name, title) {
+    updateEmployee(employee, title) {
       // prepared statement to update employee table
       return new Promise((resolve, reject) => {
         this.connection.query(`UPDATE employee
-        SET role_id = 
-        WHERE condition`, (err, results) => {
-          if (err) return reject(err);
-          resolve(results);
+        SET role_id = (SELECT id FROM role WHERE title = ?)
+        WHERE first_name = ? AND last_name = ?`, [title, employee.first_name, employee.last_name], (err, results) => {
+           if (err) return reject(err);
+           resolve(results);
           });
-        });
+       });
     };
   
 

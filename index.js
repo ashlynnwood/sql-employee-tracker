@@ -69,26 +69,46 @@ async function viewEmployees() {
 async function updateEmployeeRole() {
   // 1. find all employees
   let employees = await db.findAllEmployees();
+  console.log(employees)
   // 2. take that data that comes back and pass into question- put those employees into inquirer prompt (answer choices will be all employees data)
-  // set up a variable for the employee that user selects
+  
   // find all roles
   let roles = await db.findAllRoles();
+    // remove duplicates
+  let uniqueRoles = Array.from(new Set(roles))
+  
   // put those into a inquirer prompt
   inquirer.prompt([
     {
        type: 'list',
        name: 'upRole',
        message: `Which employee's role do you want to update?` ,
-       choices: employees
+       choices: employees.map((employee) => {
+        // return dept info as array of objects
+        // user sees name as answer choices but inquirer records value 
+        return {
+            name: employee.first_name + ' ' + employee.last_name, 
+            value: employee.id
+        }
+    })
     },
     {
        type: 'list',
        name: 'updateRole',
-       message: `Which role do you want to assign to the selected employee?` ,
-       choices: roles
+       message: `Which role do you want to assign to the selected employee?`,
+       choices: uniqueRoles.map((role) => {
+        // return role info as array of objects
+        // user sees title as answer choices but inquirer records value 
+        return {
+            name: role.title, 
+            value: role.id
+        }
+    })
     },
   ]).then(async answer => {
-       const results = await db.updateEmployeeRole(answer.upRole, answer.updateRole);
+      // set up a variable for the employee that user selects
+       const employee = JSON.parse(answer.upRole);
+       const results = await db.updateEmployee(employee, answer.updateRole);
         // .then - use update employee method passing in the employee user selected and role user chose to assign to them (in that class, use data that's coming in inside prepared statements to interact with the db)
         if (results) {
           console.log(`Updated ${answer.upRole}'s role.`)
