@@ -107,9 +107,10 @@ async function viewRoles() {
 };
 
 // Add a role
-function addRole() {
+async function addRole() {
   // find all depts
   // use those in one of your inquirer prompt's questions (what dept does the role belong to)
+  var depts = await db.findAllDepts();
   inquirer.prompt([
     {
         type: 'input',
@@ -125,14 +126,25 @@ function addRole() {
         type: 'list',
         name: 'roleDept',
         message: 'Which department does the role belong to?',
-        choices: ['Engineering', 'Finance', 'Legal', 'Sales']
+        choices: depts.map((dept) => {
+            return {
+                name: dept.name, 
+                value: dept.id
+            }
+        })
     },
-  ]).then(answer => {
+  ]).then(async answer => {
     // .then creates the role with a method from your db class
-    console.log(`Added ${answer.newRole} to the database.`)
+    const results = await db.createRole(answer.newRole, answer.newSalary, answer.roleDept);
+
+    if (results) {
+        console.log(`Added ${answer.newRole} to the database.`);
+        };
+
+    mainPrompt();
     })
 
-  mainPrompt();
+  
 };
 
 // View all depts func
@@ -167,7 +179,21 @@ function addDept() {
 };
 
 // Add an employee func
-function addEmployee() {
+async function addEmployee() {
+    var roles = await db.findAllRoles();
+    var employees = await db.findAllEmployees();
+
+    let employeeList = [];
+
+    employees.map((employee) => {
+        employeeList.push ({
+            name: employee.first_name + employee.last_name, 
+            value: employee.id
+        })
+    })
+    employeeList.push({
+        name: 'None', value: null,
+    })
     inquirer.prompt([
         {
             type: 'input',
@@ -183,18 +209,29 @@ function addEmployee() {
             type: 'list',
             name: 'emRole',
             message: "What is the employee's role?",
-            choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead']
+            choices: roles.map((role) => {
+                return {
+                    name: role.title, 
+                    value: role.id
+                }
+            })
         },
         {
             type: 'list',
             name: 'emManager',
             message: "Who is the employee's manager?",
-            choices: ['None', 'john Doe', 'Mike Chan', 'Ashley Rodriguez', 'Kevin Tupik', 'Kunal Singh','Maila Brown']
+            choices: employeeList,
+           
         },
-    ]).then(answer => {
-        console.log(`Added ${answer.firstName.lastName} to the database.`)
+    ]).then( async answer => {
+        const results = await db.createEmployee(answer.firstName, answer.lastName, answer.emRole, answer.emManager)
+
+        if (results) {
+        console.log(`Added ${answer.firstName} ${answer.lastName} to the database.`)
+        }
+        mainPrompt();
     })
-  mainPrompt();
+  
 
 };
 

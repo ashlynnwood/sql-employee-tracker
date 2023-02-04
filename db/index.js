@@ -23,12 +23,18 @@ class DB {
     };
 
   // Create a new employee
-  createEmployee(employee) {
+  createEmployee(first_name, last_name, role_id, manager_id) {
     // prepared statement
     // add to DB
+    return new Promise((resolve, reject) => {
+      this.connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${first_name}", "${last_name}", ${role_id}, ${manager_id})`, (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+        
+        });
+      });
   };
 
-  // sql commands/prepared statements
 
   // updating an employee role
 
@@ -47,8 +53,13 @@ class DB {
   };
 
   // creating a new role
-  createRole(role) {
-
+  createRole(title, salary, department_id) {
+    return new Promise((resolve, reject) => {
+      this.connection.query(`INSERT INTO role (title, salary, department_id) VALUES ("${title}", ${salary}, ${department_id})`, (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+        });
+      });
   };
 
   // finding all depts
@@ -71,7 +82,6 @@ class DB {
         });
       });
   };
-
 
 
 };
