@@ -58,8 +58,6 @@ function mainPrompt() {
 async function viewEmployees() {
   // goes to the db that you required and uses find all employees method
     const results = await db.findAllEmployees()
-       //.then that console.table the results
-    //    .then(results => )
        console.table(results);
     //    .catch(err =>console.error(err));
     
@@ -110,7 +108,7 @@ async function viewRoles() {
 async function addRole() {
   // find all depts
   // use those in one of your inquirer prompt's questions (what dept does the role belong to)
-  var depts = await db.findAllDepts();
+  let depts = await db.findAllDepts();
   inquirer.prompt([
     {
         type: 'input',
@@ -174,15 +172,12 @@ function addDept() {
         }
         mainPrompt();
     })
-
-
 };
 
 // Add an employee func
 async function addEmployee() {
-    var roles = await db.findAllRoles();
-    var employees = await db.findAllEmployees();
-
+    let roles = await db.findAllRoles();
+    let employees = await db.findAllEmployees();
     let employeeList = [];
 
     employees.map((employee) => {

@@ -30,14 +30,13 @@ class DB {
       this.connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${first_name}", "${last_name}", ${role_id}, ${manager_id})`, (err, results) => {
         if (err) return reject(err);
         resolve(results);
-        
         });
       });
   };
 
 
   // updating an employee role
-
+    updateEmployee()
 
 
   // finding all roles
