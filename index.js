@@ -96,15 +96,20 @@ function updateEmployeeRole() {
 };
 
 // View all roles function
-function viewRoles() {
+async function viewRoles() {
+    // goes to the db and uses find all roles method
+    const results = await db.findAllRoles()
+    console.table(results);
+    // .catch(err =>console.error(err));
 
+    // call the prompts again
     mainPrompt();
 };
 
 // Add a role
 function addRole() {
   // find all depts
-  // use those in one of your inquirer prompt's quesyions (what dept does the role belong to)
+  // use those in one of your inquirer prompt's questions (what dept does the role belong to)
   inquirer.prompt([
     {
         type: 'input',
@@ -147,14 +152,18 @@ function addDept() {
         {
             type: 'input',
             name: 'newDept',
-            message: "What is the name of the Department?"
+            message: "What is the name of the department?"
         },
         
-    ]).then(answer => {
-        
+    ]).then(async answer => {
+        const results = await db.createDept(answer.newDept)
+        if (results) {
+          console.log(`${answer.newDept} added to Departments.`)
+        }
+        mainPrompt();
     })
 
-    mainPrompt();
+
 };
 
 // Add an employee func

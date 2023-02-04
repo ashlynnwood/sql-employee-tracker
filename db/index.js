@@ -38,7 +38,8 @@ class DB {
   findAllRoles() {
     // prepared statement for finding all roles
     return new Promise((resolve, reject) => {
-      this.connection.query(`SELECT ...`, (err, results) => {
+      this.connection.query(`SELECT role.id, role.title, role.salary, department.name FROM role
+      LEFT JOIN department ON role.department_id = department.id`, (err, results) => {
         if (err) return reject(err);
         resolve(results);
         });
@@ -63,7 +64,12 @@ class DB {
 
   // creating a new dept
   createDept(department) {
-
+    return new Promise((resolve, reject) => {
+      this.connection.query(`INSERT INTO department (name) VALUES ("${department}")`, (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+        });
+      });
   };
 
 
