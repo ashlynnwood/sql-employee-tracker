@@ -66,31 +66,37 @@ async function viewEmployees() {
 };
 
 // Update an employee's role
-function updateEmployeeRole() {
+async function updateEmployeeRole() {
   // 1. find all employees
-  // 2. take that data that comes back and pass into one of your questions- put those employees into an inquirer prompt (answer choices will be all employees data)
+  let employees = await db.findAllEmployees();
+  // 2. take that data that comes back and pass into question- put those employees into inquirer prompt (answer choices will be all employees data)
   // set up a variable for the employee that user selects
   // find all roles
+  let roles = await db.findAllRoles();
   // put those into a inquirer prompt
   inquirer.prompt([
     {
        type: 'list',
-       name: 'newRole',
+       name: 'upRole',
        message: `Which employee's role do you want to update?` ,
-       choices: ["employee name list"]
+       choices: employees
     },
     {
        type: 'list',
        name: 'updateRole',
        message: `Which role do you want to assign to the selected employee?` ,
-       choices: ["role list"]
+       choices: roles
     },
-  ]).then(answers => {
-        // .then - use your update employee method (set up in class), passing in the employee they selected, and the role they chose to assign to them (in that class, use data that's coming in inside prepared statements to interact with the db)
+  ]).then(async answer => {
+       const results = await db.updateEmployeeRole(answer.upRole, answer.updateRole);
+        // .then - use update employee method passing in the employee user selected and role user chose to assign to them (in that class, use data that's coming in inside prepared statements to interact with the db)
+        if (results) {
+          console.log(`Updated ${answer.upRole}'s role.`)
+        }
 
-        console.log(`Updated ${employee.name}'s role.`)
-    });
       mainPrompt();
+    });
+      
 };
 
 // View all roles function

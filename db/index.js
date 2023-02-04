@@ -36,8 +36,18 @@ class DB {
 
 
   // updating an employee role
-    // updateEmployee();
-
+    updateEmployee(first_name, last_name, title) {
+      // prepared statement to update employee table
+      return new Promise((resolve, reject) => {
+        this.connection.query(`UPDATE employee
+        SET role_id = 
+        WHERE condition`, (err, results) => {
+          if (err) return reject(err);
+          resolve(results);
+          });
+        });
+    };
+  
 
   // finding all roles
   findAllRoles() {
