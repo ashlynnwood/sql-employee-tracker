@@ -1,4 +1,4 @@
-// Require inquirer, logo, db
+// Require inquirer, logo, db, console table
 const inquirer = require('inquirer');
 const logo = require('asciiart-logo');
 const db = require('./db/index');
@@ -23,7 +23,7 @@ function mainPrompt() {
           message: "What would you like to do?",
           choices: ['View All Employees', 'Update Employee Role', 'View Departments', 'Add Employee', 'View All Roles', 'Add Role', 'Add Department', 'Quit']
       }
-      // .then that calls the appropriate function depending on what the user chose
+      // .then to call the appropriate function depending on what the user chose
   ]).then(answer => {
       switch (answer.mainPrompt) {
           case 'View All Employees':
@@ -56,10 +56,10 @@ function mainPrompt() {
 
 // View all employees
 async function viewEmployees() {
-  // goes to the db that you required and uses find all employees method
+  // goes to the db required and uses find all employees method
     const results = await db.findAllEmployees()
        console.table(results);
-    //    .catch(err =>console.error(err));
+       // .catch(err =>console.error(err));
     
     // call the prompts again
     mainPrompt();
@@ -96,7 +96,7 @@ function updateEmployeeRole() {
 // View all roles function
 async function viewRoles() {
     // goes to the db and uses find all roles method
-    const results = await db.findAllRoles()
+    const results = await db.findAllRoles();
     console.table(results);
     // .catch(err =>console.error(err));
 
@@ -106,8 +106,8 @@ async function viewRoles() {
 
 // Add a role
 async function addRole() {
-  // find all depts
-  // use those in one of your inquirer prompt's questions (what dept does the role belong to)
+  // use method to find all depts
+  // use in inquirer prompt questions (what dept does the role belong to)
   let depts = await db.findAllDepts();
   inquirer.prompt([
     {
@@ -124,7 +124,10 @@ async function addRole() {
         type: 'list',
         name: 'roleDept',
         message: 'Which department does the role belong to?',
+        // map over departments
         choices: depts.map((dept) => {
+            // return dept info as array of objects
+            // user sees name as answer choices but inquirer records value 
             return {
                 name: dept.name, 
                 value: dept.id
@@ -132,17 +135,17 @@ async function addRole() {
         })
     },
   ]).then(async answer => {
-    // .then creates the role with a method from your db class
+    // .then creates the role with method from db class
     const results = await db.createRole(answer.newRole, answer.newSalary, answer.roleDept);
-
-    if (results) {
-        console.log(`Added ${answer.newRole} to the database.`);
+        // make sure it worked
+        if (results) {
+           console.log(`Added ${answer.newRole} to the database.`);
         };
 
+    // call main prompts here so it doesn't get called too early
     mainPrompt();
-    })
+    });
 
-  
 };
 
 // View all depts func
@@ -176,19 +179,24 @@ function addDept() {
 
 // Add an employee func
 async function addEmployee() {
+    // get all roles
     let roles = await db.findAllRoles();
+    // get all employees
     let employees = await db.findAllEmployees();
+    // set employee list to empty array
     let employeeList = [];
-
+    // create array to include all employess + null option
     employees.map((employee) => {
         employeeList.push ({
             name: employee.first_name + employee.last_name, 
             value: employee.id
         })
-    })
+     })
+
     employeeList.push({
         name: 'None', value: null,
-    })
+      })
+
     inquirer.prompt([
         {
             type: 'input',
@@ -204,6 +212,7 @@ async function addEmployee() {
             type: 'list',
             name: 'emRole',
             message: "What is the employee's role?",
+            // map over all roles
             choices: roles.map((role) => {
                 return {
                     name: role.title, 
@@ -219,14 +228,15 @@ async function addEmployee() {
            
         },
     ]).then( async answer => {
+        // actually add the employee to db
         const results = await db.createEmployee(answer.firstName, answer.lastName, answer.emRole, answer.emManager)
 
         if (results) {
-        console.log(`Added ${answer.firstName} ${answer.lastName} to the database.`)
+            console.log(`Added ${answer.firstName} ${answer.lastName} to the database.`)
         }
+
         mainPrompt();
     })
-  
 
 };
 

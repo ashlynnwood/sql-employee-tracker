@@ -1,7 +1,7 @@
 const connection = require('./connection');
 
 class DB {
-  // Keeping a reference to the connection on the class in case need it later
+  // Keeping a reference to the connection on the class
   constructor(connection) {
     this.connection = connection;
   }
@@ -36,7 +36,7 @@ class DB {
 
 
   // updating an employee role
-    updateEmployee()
+    // updateEmployee();
 
 
   // finding all roles
@@ -80,7 +80,7 @@ class DB {
         resolve(results);
         });
       });
-  };
+    };
 
 
 };
