@@ -34,7 +34,6 @@ class DB {
       });
   };
 
-
   // updating an employee role
     updateEmployee(employee, title) {
       // prepared statement to update employee table

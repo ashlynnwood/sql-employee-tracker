@@ -108,6 +108,7 @@ async function updateEmployeeRole() {
   ]).then(async answer => {
       // set up a variable for the employee that user selects
        const employee = JSON.parse(answer.upRole);
+       console.log(employee);
        const results = await db.updateEmployee(employee, answer.updateRole);
         // .then - use update employee method passing in the employee user selected and role user chose to assign to them (in that class, use data that's coming in inside prepared statements to interact with the db)
         if (results) {
@@ -214,7 +215,7 @@ async function addEmployee() {
     // create array to include all employess + null option
     employees.map((employee) => {
         employeeList.push ({
-            name: employee.first_name + employee.last_name, 
+            name: employee.first_name + ' ' + employee.last_name, 
             value: employee.id
         })
      })
