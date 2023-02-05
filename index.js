@@ -69,7 +69,6 @@ async function viewEmployees() {
 async function updateEmployeeRole() {
   // 1. find all employees
   let employees = await db.findAllEmployees();
-  console.log(employees)
   // 2. take that data that comes back and pass into question- put those employees into inquirer prompt (answer choices will be all employees data)
   
   // find all roles
@@ -107,12 +106,11 @@ async function updateEmployeeRole() {
     },
   ]).then(async answer => {
       // set up a variable for the employee that user selects
-       const employee = JSON.parse(answer.upRole);
-       console.log(employee);
+       const employee = { id: parseInt(answer.upRole) }; 
        const results = await db.updateEmployee(employee, answer.updateRole);
         // .then - use update employee method passing in the employee user selected and role user chose to assign to them (in that class, use data that's coming in inside prepared statements to interact with the db)
         if (results) {
-          console.log(`Updated ${answer.upRole}'s role.`)
+          console.log(`Updated employee's role.`)
         }
 
       mainPrompt();

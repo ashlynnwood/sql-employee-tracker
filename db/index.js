@@ -39,8 +39,8 @@ class DB {
       // prepared statement to update employee table
       return new Promise((resolve, reject) => {
         this.connection.query(`UPDATE employee
-        SET role_id = (SELECT id FROM role WHERE title = ?)
-        WHERE first_name = ? AND last_name = ?`, [title, employee.first_name, employee.last_name], (err, results) => {
+        SET role_id = (SELECT id FROM role WHERE id = ?)
+        WHERE id = ?`, [title, employee.id], (err, results) => {
            if (err) return reject(err);
            resolve(results);
           });
