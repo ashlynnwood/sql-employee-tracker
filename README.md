@@ -3,7 +3,7 @@
 ![GitHub-license](https://img.shields.io/badge/License-MIT-blue)
 
   ## Preview
-  ![employee-tracker-preview](./sql-employee-tracker.gif)
+  ![employee-tracker-preview](./employee-tracker.gif)
 
   ## Description
   This project was designed to be a content management system for a company's employee database. It allows users to quickly and easily interact with the database to view and update employee information and organize their business via command line prompts.
