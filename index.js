@@ -1,15 +1,12 @@
-// Require inquirer, logo, db, console table
+// Require inquirer, db, console table
 const inquirer = require('inquirer');
-const logo = require('asciiart-logo');
 const db = require('./db/index');
 require('console.table');
 
+// Initialize app
 init();
 
-// Display logo text, load main prompts
 function init() {
-  // show logo
-
   // load the main prompts
   mainPrompt();
 };
@@ -271,6 +268,3 @@ function quit() {
   process.exit();
 };
 
-
-
-// Bonus: view all employees by manager, view all employees by dept, remove dept, remove role,  remove employee, view total utilized budget by dept, update employee manager 
